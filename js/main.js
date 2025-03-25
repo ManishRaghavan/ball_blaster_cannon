@@ -6,6 +6,10 @@ const INITIAL_FIRE_RATE = 8; // Already increased from 5 to 8 for easier gamepla
 const INITIAL_BULLET_POWER = 5; // Further increased from 3 to 5 for even easier gameplay
 const SPLASH_DURATION = 3000; // Splash screen shows for 3 seconds
 
+// Sound settings
+const SOUND_ENABLED = true; // Global sound toggle
+const SOUND_VOLUME = 0.3; // Default sound volume
+
 // Adjustable dimensions
 let CANVAS_WIDTH = 512;
 let CANVAS_HEIGHT = 768;
@@ -23,6 +27,7 @@ let balls = [];
 let bullets = [];
 let backgroundImage; // Game background image
 let splashImage; // Splash screen image
+let gunSound; // Sound when cannon fires
 let score = 0;
 let gameOver = false;
 let level = 1;
@@ -46,6 +51,14 @@ function preload() {
     "title_bg.webp",
     (img) => (splashImage = img),
     () => console.error("Failed to load splash screen")
+  );
+
+  // Load gun sound
+  soundFormats("mp3");
+  gunSound = loadSound(
+    "gun_sound.mp3",
+    () => console.log("Gun sound loaded successfully"),
+    () => console.error("Failed to load gun sound")
   );
 }
 
@@ -301,4 +314,23 @@ function mouseClicked() {
   }
 
   return false; // Prevent default click behavior
+}
+
+// Function to play a sound with safety checks
+function playSound(sound) {
+  if (SOUND_ENABLED && sound && sound.isLoaded()) {
+    // If sound is already playing, stop it and restart
+    if (sound.isPlaying()) {
+      sound.stop();
+    }
+    sound.setVolume(SOUND_VOLUME);
+    sound.play();
+  }
+}
+
+// Function to stop a sound with safety checks
+function stopSound(sound) {
+  if (sound && sound.isPlaying()) {
+    sound.stop();
+  }
 }

@@ -59,6 +59,9 @@ class Cannon {
 
       // Add smoke particles
       this.addSmokeParticle();
+
+      // Play gun sound
+      playSound(gunSound);
     }
 
     // Decrease recoil over time

@@ -119,8 +119,7 @@ function updateGame() {
 
     // Check collision with cannon
     if (cannon && cannon.checkCollision(balls[i])) {
-      gameOver = true;
-      gameState = "GAME_OVER";
+      endGame();
       break;
     }
   }
@@ -924,6 +923,8 @@ function mouseClicked() {
       mouseY > buttonY - buttonHeight / 2 &&
       mouseY < buttonY + buttonHeight / 2
     ) {
+      // Stop any playing sounds
+      stopSound(gunSound);
       startGame();
       return false; // Prevent default click behavior
     }
@@ -947,6 +948,9 @@ function mouseClicked() {
       gameOverScoreReveal = 0;
       gameOverLevelReveal = 0;
       gameOverButtonScale = 0;
+
+      // Stop any playing sounds
+      stopSound(gunSound);
 
       // Start a new game
       startGame();
@@ -1079,4 +1083,13 @@ function awardPoints(points, x, y, color) {
     y || CANVAS_HEIGHT / 2,
     color || scoreColors[colorIndex]
   );
+}
+
+// Function to handle when game is over
+function endGame() {
+  gameOver = true;
+  gameState = "GAME_OVER";
+
+  // Stop any playing sounds
+  stopSound(gunSound);
 }
